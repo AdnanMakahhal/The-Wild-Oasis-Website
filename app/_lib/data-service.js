@@ -139,10 +139,12 @@ export async function getSettings() {
 
 export async function getCountries() {
   try {
-    const res = await fetch(
-      "https://restcountries.com/v2/all?fields=name,flag",
-    );
-    const countries = await res.json();
+    const res = await fetch("https://flagcdn.com/en/codes.json");
+    const codes = await res.json();
+    const countries = Object.entries(codes).map(([code, name]) => ({
+      name,
+      flag: `https://flagcdn.com/${code}.svg`,
+    }));
     return countries;
   } catch {
     throw new Error("Could not fetch countries");
@@ -163,6 +165,7 @@ export async function createGuest(newGuest) {
   return data;
 }
 
+/*
 export async function createBooking(newBooking) {
   const { data, error } = await supabase
     .from("bookings")
@@ -178,6 +181,8 @@ export async function createBooking(newBooking) {
 
   return data;
 }
+
+*/
 
 /////////////
 // UPDATE
@@ -197,7 +202,7 @@ export async function updateGuest(id, updatedFields) {
   }
   return data;
 }
-
+/*
 export async function updateBooking(id, updatedFields) {
   const { data, error } = await supabase
     .from("bookings")
@@ -225,3 +230,5 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+*
+*/
